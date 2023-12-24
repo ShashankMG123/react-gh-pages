@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Sidebar from './Components/SideBar/SideBar';
+import MainContent from './Components/MainContent/MainContent';
+import Resume from './Components/Resume/Resume';
+import { NavBarOptions } from './Enums/NavBarEnum';
+import NavBar from './Components/NavBar/NavBar';
+
 
 function App() {
+  function renderMainContent() {
+    if(navLocation === NavBarOptions.About){
+      return(<MainContent />)
+    }
+    else {
+      return(<Resume />)
+    }
+  }
+
+  function NavBarToggle(page: NavBarOptions) {
+    console.log(page)
+    setNavLocation(page)
+  }
+
+  const [navLocation, setNavLocation] = useState(NavBarOptions.About)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <main>
+          <Sidebar />
+          <div className="main-content">
+            <NavBar navOnClick={NavBarToggle} page={navLocation}/>
+            {renderMainContent()}
+          </div>
+        </main>
     </div>
   );
 }
